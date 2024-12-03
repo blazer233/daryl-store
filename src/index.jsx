@@ -2,7 +2,6 @@ import React, {
   createContext,
   createElement,
   useContext,
-  useState,
   useEffect,
   useReducer,
   useMemo,
@@ -26,11 +25,15 @@ export const createContainer = (defaultValue, defaultName = '') => {
   const container = {
     useContainer: () => useContext(Context),
     Provider: ({ children }) => {
-      const [state, dispatch] = useReducer((state, action) => action(state), defaultValue);
+      const [state, dispatch] = useReducer(
+        (state, action) => action(state),
+        defaultValue
+      );
       useEffect(() => {
         globalState.set(defaultName, state);
       }, [state]);
-      return createElement(Context.Provider, { value :[state, dispatch]}, children);
+      const value = useMemo(() => [state, dispatch], [state]);
+      return <Context.Provider value={value}>{children}</Context.Provider>;
     },
   };
   containers.push(container);

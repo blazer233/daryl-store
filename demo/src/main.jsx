@@ -5,8 +5,6 @@ import { ComposedProvider } from 'daryl-store';
 
 createRoot(document.getElementById('root')).render(
   <ComposedProvider>
-    <StrictMode>
-      <App />
-    </StrictMode>
+    <App />
   </ComposedProvider>
 );
