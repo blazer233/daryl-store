@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  createElement,
   useContext,
   useEffect,
   useReducer,
@@ -26,7 +25,7 @@ export const createContainer = (defaultValue, defaultName = '') => {
     useContainer: () => useContext(Context),
     Provider: ({ children }) => {
       const [state, dispatch] = useReducer(
-        (state, action) => action(state),
+        (state, action) => typeof action === 'function' ? action(state) : action,
         defaultValue
       );
       useEffect(() => {
