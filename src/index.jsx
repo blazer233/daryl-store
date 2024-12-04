@@ -1,55 +1,55 @@
 import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useMemo,
+  createContext as createContextOrig,
+  useContext as useContextOrig,
+  useLayoutEffect,
+  useRef,
+  useCallback,
+  useSyncExternalStore,
 } from 'react';
 
-const containers = [];
+const createProvider = ProviderOrig => {
+  return ({ value, children }) => {
+    console.log(value);
+    const contextValue = useRef({ value, listeners: new Set() });
 
-export const manageGlobalState = () => {
-  const listeners = {};
-  return {
-    delete: key => delete listeners[key],
-    get: key => (key ? listeners[key] : listeners),
-    set: (key, val) => (listeners[key] = val),
+    useLayoutEffect(() => {
+      contextValue.current.value = value;
+      contextValue.current.listeners.forEach(listener => listener());
+    }, [value]);
+
+    return <ProviderOrig value={contextValue.current}>{children}</ProviderOrig>;
   };
 };
 
-const globalState = manageGlobalState();
+export const createContext = defaultValue => {
+  const context = createContextOrig({
+    value: defaultValue,
+    listeners: new Set(),
+  });
+  context.Provider = createProvider(context.Provider);
+  return context;
+};
 
-export const createContainer = (defaultValue, defaultName = '') => {
-  const Context = createContext({});
-  const container = {
-    useContainer: () => useContext(Context),
-    Provider: ({ children }) => {
-      const [state, dispatch] = useReducer(
-        (state, action) => typeof action === 'function' ? action(state) : action,
-        defaultValue
-      );
-      useEffect(() => {
-        globalState.set(defaultName, state);
-      }, [state]);
-      const value = useMemo(() => [state, dispatch], [state]);
-      return <Context.Provider value={value}>{children}</Context.Provider>;
+export const useContextSelector = (
+  context,
+  selector,
+  equalityFn = Object.is
+) => {
+  const { value, listeners } = useContextOrig(context);
+
+  const subscribe = useCallback(
+    callback => {
+      listeners.add(callback);
+      return () => listeners.delete(callback);
     },
-  };
-  containers.push(container);
-  return container;
-};
-
-export const ComposedProvider = ({ children }) => {
-  return containers.reduceRight(
-    (child, { Provider }) => <Provider>{child}</Provider>,
-    children
+    [listeners]
   );
-};
 
-export const handleStoreBaseData = storeTemp => {
-  let temp = {};
-  for (const key in storeTemp) {
-    temp[key] = createContainer(storeTemp[key], key);
-  }
-  return temp;
+  const getSnapshot = useCallback(() => {
+    const nextSnapshot = selector(value);
+    const prevSnapshot = useRef(selector(value)).current;
+    return equalityFn(prevSnapshot, nextSnapshot) ? prevSnapshot : nextSnapshot;
+  }, [value, selector, equalityFn]);
+
+  return useSyncExternalStore(subscribe, getSnapshot);
 };
