@@ -1,3 +1,3 @@
 import { handleStoreBaseData } from 'daryl-store';
 
-export default handleStoreBaseData({ comNum: 10 });
+export default handleStoreBaseData({ num1: 10, num2: 10 });
