@@ -1,10 +1,13 @@
 {
-  "name": "daryl-store",
+  "name": "@tencent/use-context-store",
   "version": "0.0.1",
   "description": "React store management",
   "author": "darylsong",
   "license": "MIT",
-  "repository": "https://github.com/blazer233/daryl-store.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blazer233/daryl-store.git"
+  },
   "main": "dist/index.js",
   "type": "module",
   "jest": {
