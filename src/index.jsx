@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const containers = [];
 const GlobalStateContext = createContext({});
@@ -19,8 +13,11 @@ export const createContainer = (defaultValue, defaultName = '') => {
       useEffect(() => {
         globalState[defaultName] = state;
       }, [state]);
-      const value = useMemo(() => [state, dispatch], [state]);
-      return <Context.Provider value={value}>{children}</Context.Provider>;
+      return (
+        <Context.Provider value={[state, dispatch]}>
+          {children}
+        </Context.Provider>
+      );
     },
   };
   containers.push(container);
@@ -34,7 +31,7 @@ export const ComposedProvider = ({ children }) => {
   );
 };
 
-export const handleStoreBaseData = storeTemp => {
+export const setStoreBaseData = storeTemp => {
   let temp = {};
   for (const key in storeTemp) {
     temp[key] = createContainer(storeTemp[key], key);

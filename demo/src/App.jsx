@@ -1,7 +1,7 @@
-import StoreData from './store';
+import storeData from './store';
 
 const MinusCom = () => {
-  const [num, setTodos] = StoreData.num1.useContainer();
+  const [num, setTodos] = storeData.num1.useContainer();
   return (
     <h2 onClick={() => setTodos(nums => nums - 1)}>
       MinusCom {num} {Math.random()}
@@ -9,7 +9,7 @@ const MinusCom = () => {
   );
 };
 const AddCom = () => {
-  const [num, setTodos] = StoreData.num2.useContainer();
+  const [num, setTodos] = storeData.num2.useContainer();
   return (
     <h2 onClick={() => setTodos(nums => nums + 1)}>
       AddCom {num}

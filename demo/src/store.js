@@ -1,3 +1,3 @@
-import { handleStoreBaseData } from 'daryl-store';
+import { setStoreBaseData } from 'daryl-store';
 
-export default handleStoreBaseData({ num1: 10, num2: 10 });
+export default setStoreBaseData({ num1: 10, num2: 10 });
