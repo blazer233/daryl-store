@@ -1,7 +1,7 @@
 {
-  "name": "@tencent/use-context-store",
-  "version": "0.0.2",
-  "description": "React store management",
+  "name": "@tencent/unstated-next-quick",
+  "version": "0.0.1",
+  "description": "a react store based on unstated-next",
   "author": "darylsong",
   "license": "MIT",
   "repository": {
@@ -10,9 +10,6 @@
   },
   "main": "dist/index.js",
   "type": "module",
-  "jest": {
-    "testEnvironment": "jsdom"
-  },
   "engines": {
     "node": ">=8",
     "npm": ">=5"
@@ -37,9 +34,9 @@
     "dist"
   ],
   "keywords": [
+    "unstated-next",
     "react",
     "react hooks",
-    "react store",
-    "typescript"
+    "react store"
   ]
 }

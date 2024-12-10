@@ -6,18 +6,18 @@
 ```js
 // store.js
 // 声明
-import { setStoreBaseData } from 'daryl-store';
+import { setStoreBaseData } from '@tencent/unstated-next-quick';
 
 export default setStoreBaseData({ num1: 10, num2: 10 });
 ```
 
-使用时，只会更新当前组建的使用，并不会更新同一<ComposedProvider/>下包裹的其他组建
+使用时，只会更新当前组建的使用，并不会更新同`<ComposedProvider/>`下包裹的其他组建
 
 ```js
 // main.jsx
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
-import { ComposedProvider } from 'daryl-store';
+import { ComposedProvider } from '@tencent/unstated-next-quick';
 
 createRoot(document.getElementById('root')).render(
   <ComposedProvider>
@@ -65,7 +65,6 @@ const App = () => {
 
 export default App;
 ```
-如何在jsx之外获取state呢？
 
 
 相比 `unstated-next` 更加tiny、更加易学习，更加便捷
